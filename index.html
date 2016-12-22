@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--<link rel="icon" href="../../favicon.ico">-->
+
+<title>新闻评论情感分析的api演示</title>
+
+<!-- Bootstrap core CSS -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<script>
+function get_commenr_sc()
+{
+  var source = document.forms.input.source.value;
+  var response = $.ajax({
+    url: 'http://localhost:8080/?text='+source,
+    type: 'GET',
+
+  }).done(function(response){
+     document.getElementById('commenr_sc').innerHTML = response["text"]+"<br>";
+    switch (response["label"]){
+      case "3": sc_label="无明显情感或陈述事实";
+              break;
+      case "2": sc_label="负面情感";
+              break;
+      case "1": sc_label="正面情感";
+              break;
+      default: sc_label="未判断";
+    }
+    document.getElementById('commenr_sc').innerHTML += '<font  size="4" color="red"><strong>'+sc_label+"</font><strong><br>";
+  });
+}
+</script>
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="8.html">新闻评论情感分析接口演示</a>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <div style='padding:15px'>
+    </div>
+    <form id='input' onsubmit='get_commenr_sc(); return false;'>
+      <div class="input-group">
+        <span class="input-group-addon">输入评论</span>
+        <input type="text"  style="width:70%" class="form-control" id='source' placeholder="输入要测试的新闻评论.....">&nbsp;
+        <button type="submit" class="btn btn-default">查询情感!</button>
+      </div>
+    </form>
+    <div style='padding:5px'>
+    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong>问题举例: </strong> </div>
+    <div class="panel-body" id='examples'>
+      心系百姓 , 休察人民的疾苦，共和国的好总理 .<br>
+    </div>
+  </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">答案</div>
+      <div class="panel-body" id='commenr_sc'>
+        ..
+      </div>
+    </div>
+  </div>
+  <script src="node_modules/jquery/dist/jquery.js"></script>
+  </body>
+  </html>
